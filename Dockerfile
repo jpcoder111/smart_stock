@@ -13,6 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code into the container
 COPY . .
 
+# Create the logs directory and set the correct permissions
+RUN mkdir -p ./logs && chmod -R 755 ./logs
+
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
