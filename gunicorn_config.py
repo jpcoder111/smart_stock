@@ -2,6 +2,6 @@
 
 bind = '0.0.0.0:8000'
 workers = 3
-accesslog = './logs/access.log'
-errorlog = './logs/error.log'
+accesslog = None
+errorlog = None
 loglevel = 'info'
