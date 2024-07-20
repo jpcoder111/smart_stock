@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: gunicorn -c gunicorn_config.py smart_stock.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
