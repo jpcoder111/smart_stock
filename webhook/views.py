@@ -11,5 +11,5 @@ def webhook_listener(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         logger.info(f"Received webhook data: {data}")
-        return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'success12345'})
     return JsonResponse({'status': 'failure'}, status=400)
