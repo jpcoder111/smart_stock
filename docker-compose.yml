@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    command: gunicorn -c gunicorn_config.py smart_stock.wsgi:application
+    command: gunicorn -c gunicorn_config.py main.wsgi:application
     volumes:
       - .:/app
     ports:

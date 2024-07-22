@@ -1,4 +1,4 @@
-# smart_stock/settings/production.py
+# main/settings/production.py
 
 from .base import *
 

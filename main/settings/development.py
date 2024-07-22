@@ -1,4 +1,4 @@
-# smart_stock/settings/development.py
+# main/settings/development.py
 
 from .base import *
 

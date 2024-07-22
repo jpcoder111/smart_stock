@@ -22,4 +22,4 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Run the application
-CMD ["gunicorn", "-c", "gunicorn_config.py", "smart_stock.wsgi:application"]
+CMD ["gunicorn", "-c", "gunicorn_config.py", "main.wsgi:application"]

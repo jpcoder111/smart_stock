@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'webhook',
+    'apps.webhooks',
 ]
 
 MIDDLEWARE = [
@@ -39,10 +39,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'smart_stock.middleware.LogRequestMiddleware',
+    'main.middlewares.http_requests.LogRequestResponseMiddleware',
 ]
 
-ROOT_URLCONF = 'smart_stock.urls'
+ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
     {
@@ -60,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'smart_stock.wsgi.application'
+WSGI_APPLICATION = 'main.wsgi.application'
 
 
 # Database
@@ -113,42 +113,55 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-class JsonFormatter(logging.Formatter):
-    def format(self, record):
-        log_record = {
-            'timestamp': self.formatTime(record, self.datefmt),
-            'level': record.levelname,
-            'message': record.getMessage(),
-            'name': record.name,
-            'filename': record.filename,
-            'funcName': record.funcName,
-            'lineno': record.lineno,
-            'request_payload': getattr(record, 'request_payload', None)
-        }
-        return json.dumps(log_record)
+# class JsonFormatter(logging.Formatter):
+#     # def format(self, record):
+#     #     log_record = {
+#     #         'timestamp': self.formatTime(record, self.datefmt),
+#     #         'level': record.levelname,
+#     #         'event': record.msg.get('event', 'unknown'),
+#     #         'method': record.msg.get('method', None),
+#     #         'path': record.msg.get('path', None),
+#     #         'headers': record.msg.get('headers', None),
+#     #         'query_params': record.msg.get('query_params', None),
+#     #         'body': record.msg.get('body', None),
+#     #         'status_code': record.msg.get('status_code', None),
+#     #         'data_type': record.msg.get('data_type', None),
+#     #         'data_content': record.msg.get('data_content', None),
+#     #     }
+#     #     return json.dumps(log_record)
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'json': {
-            '()': JsonFormatter,
-            'datefmt': '%Y-%m-%d %H:%M:%S',
+            'format': '{ "timestamp": "%(asctime)s", "level": "%(levelname)s", "message": %(message)s }',
         },
     },
     'handlers': {
-        'file': {
+        'requests_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'http_requests.log',
+            'filename': 'logs/http_requests/requests.log',
+            'formatter': 'json',
+        },
+        'responses_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/http_requests/responses.log',
             'formatter': 'json',
         },
     },
     'loggers': {
-        'webhook': {
-            'handlers': ['file'],
+        'http_requests.request': {
+            'handlers': ['requests_file'],
             'level': 'INFO',
-            'propagate': True,
+            'propagate': False,
+        },
+        'http_requests.response': {
+            'handlers': ['responses_file'],
+            'level': 'INFO',
+            'propagate': False,
         },
     },
 }
