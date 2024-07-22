@@ -21,7 +21,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@ec2-54-218-41-38.us-west-2.compute.amazonaws.com << 'EOF'
-            cd main
+            cd smart_stock
             git pull
             docker-compose up --build -d
           EOF
