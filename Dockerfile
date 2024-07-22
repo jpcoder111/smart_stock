@@ -1,5 +1,3 @@
-#Dockerfile
-
 # Use the official Python image from the Docker Hub
 FROM python:3.10-slim
 
@@ -14,6 +12,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code into the container
 COPY . .
+
+# Create the log directory and files
+RUN mkdir -p /app/logs/http_requests && \
+    touch /app/logs/http_requests/requests.log && \
+    touch /app/logs/http_requests/responses.log
 
 # Collect static files
 RUN python manage.py collectstatic --noinput

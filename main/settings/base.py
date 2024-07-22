@@ -5,6 +5,7 @@ import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = BASE_DIR.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -113,23 +114,6 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-# class JsonFormatter(logging.Formatter):
-#     # def format(self, record):
-#     #     log_record = {
-#     #         'timestamp': self.formatTime(record, self.datefmt),
-#     #         'level': record.levelname,
-#     #         'event': record.msg.get('event', 'unknown'),
-#     #         'method': record.msg.get('method', None),
-#     #         'path': record.msg.get('path', None),
-#     #         'headers': record.msg.get('headers', None),
-#     #         'query_params': record.msg.get('query_params', None),
-#     #         'body': record.msg.get('body', None),
-#     #         'status_code': record.msg.get('status_code', None),
-#     #         'data_type': record.msg.get('data_type', None),
-#     #         'data_content': record.msg.get('data_content', None),
-#     #     }
-#     #     return json.dumps(log_record)
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -142,13 +126,13 @@ LOGGING = {
         'requests_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/http_requests/requests.log',
+            'filename': os.path.join(ROOT_DIR, 'logs/http_requests/requests.log'),
             'formatter': 'json',
         },
         'responses_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/http_requests/responses.log',
+            'filename': os.path.join(ROOT_DIR, 'logs/http_requests/responses.log'),
             'formatter': 'json',
         },
     },
@@ -165,3 +149,4 @@ LOGGING = {
         },
     },
 }
+

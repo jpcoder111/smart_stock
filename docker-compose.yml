@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    command: gunicorn -c gunicorn_config.py main.wsgi:application
+    command: sh -c "python scripts/create_log_files.py && python manage.py migrate && gunicorn -c gunicorn_config.py main.wsgi:application"
     volumes:
       - .:/app
     ports:

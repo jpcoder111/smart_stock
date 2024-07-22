@@ -141,3 +141,5 @@ dmypy.json
 # Gitignore keys
 github_actions
 github_actions.pub
+
+logs/
