@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+import json
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -111,15 +113,35 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
+class JsonFormatter(logging.Formatter):
+    def format(self, record):
+        log_record = {
+            'timestamp': self.formatTime(record, self.datefmt),
+            'level': record.levelname,
+            'message': record.getMessage(),
+            'name': record.name,
+            'filename': record.filename,
+            'funcName': record.funcName,
+            'lineno': record.lineno,
+            'request_payload': getattr(record, 'request_payload', None)
+        }
+        return json.dumps(log_record)
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'json': {
+            '()': JsonFormatter,
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
     'handlers': {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'all_logs.log',
+            'filename': 'http_requests.log',
+            'formatter': 'json',
         },
     },
     'loggers': {
